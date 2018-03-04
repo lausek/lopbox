@@ -64,7 +64,7 @@ impl<'a> App<'a> {
         }; 
 
         for (i, label) in labels.iter().enumerate() {
-            app.buttons.push((EXIT_ERROR + i as i32, gtk::Button::new_with_label(label)));
+            app.buttons.push((1 + EXIT_ERROR + i as i32, gtk::Button::new_with_label(label)));
         }
         
         if settings.is_cancelable {
