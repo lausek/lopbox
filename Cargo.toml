@@ -1,0 +1,7 @@
+[package]
+name = "opbox"
+version = "0.1.0"
+authors = ["lausek <root@lausek.eu>"]
+
+[dependencies]
+gtk = { git = "https://github.com/gtk-rs/gtk.git" }
