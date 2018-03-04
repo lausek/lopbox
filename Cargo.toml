@@ -5,3 +5,4 @@ authors = ["lausek <root@lausek.eu>"]
 
 [dependencies]
 gtk = { git = "https://github.com/gtk-rs/gtk.git" }
+argparse = "0.2.1"
