@@ -3,6 +3,9 @@ extern crate gtk;
 use gtk::prelude::*;
 use gtk::{Window, WindowType, WindowPosition};
 
+const EXIT_NORMAL: i32 = 0;
+const EXIT_ERROR: i32 = 1;
+
 const PADDING: u32 = 10;
 
 struct App {
@@ -16,11 +19,12 @@ impl App {
             buttons: Vec::new(),
         }; 
 
-        for l in labels {
-            app.buttons.push((-1, gtk::Button::new_with_label(l)));
+        for (i, label) in labels.iter().enumerate() {
+              
+            app.buttons.push((EXIT_ERROR + i as i32, gtk::Button::new_with_label(label)));
         }
         
-        app.buttons.push((0, gtk::Button::new_with_label("Cancel")));
+        app.buttons.push((EXIT_NORMAL, gtk::Button::new_with_label("Cancel")));
 
         app
     }
@@ -74,6 +78,5 @@ fn main() {
 
     let mut app = App::new(labels);
     run(&mut app);
-
 
 }
