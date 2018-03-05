@@ -1,7 +1,7 @@
 extern crate gtk;
 
 use gtk::prelude::*;
-use gtk::{Window, WindowType, WindowPosition};
+use gtk::{StyleContext, Window, WindowType, WindowPosition};
 
 mod settings;
 use settings::Settings;
@@ -36,6 +36,15 @@ fn close() -> gtk::Inhibit {
 }
 
 fn run(app: &App) {
+    
+    let provider = gtk::CssProvider::new();
+    
+    {
+        let css_string = format!("*{{background-image:none;color:{};background-color:{};}}",
+                                app.settings.foreground,
+                                app.settings.background);
+        provider.load_from_data(css_string.as_bytes()).ok();
+    }
 
     let window = Window::new(WindowType::Popup);
     window.set_keep_above(true);
@@ -43,20 +52,24 @@ fn run(app: &App) {
     window.connect_delete_event(|_, _| {
         close()
     });
-    
     window.set_title(&app.settings.title);
 
-    let component = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    if let Some(context) = window.get_style_context() {
+        let screen = context.get_screen().unwrap();
+        StyleContext::add_provider_for_screen(&screen, &provider, gtk::STYLE_PROVIDER_PRIORITY_APPLICATION); 
+    }
+
+    let component = gtk::Box::new(gtk::Orientation::Vertical, 8);
    
     for &(fcode, ref button) in &app.settings.buttons {
         button.connect_clicked(move |_| {
             close();
             std::process::exit(fcode);
         });
-
+    
         component.pack_start(button, true, true, PADDING);
     }
-
+    
     component.show_all();
 
     window.add(&component);
@@ -73,10 +86,6 @@ fn main() {
         println!("Failed to inizialite gtk");
         return;
     } 
-
-    for arg in std::env::args() {
-        println!("{}", arg);
-    }
 
     match Settings::from_args() {
         Ok(mut settings) => {

@@ -3,10 +3,11 @@
 # change this path according to your build directory
 BUILDPATH=~/Projects/opbox/target/debug/opbox
 OPBOX=$(realpath $BUILDPATH)
+FLAGS="-f #d3d3d3 -b #101010"
 
 BUTTONS="[{\"code\":10,\"label\":\"Lock\"}, {\"code\":20,\"label\":\"Reboot\"}, {\"code\":30,\"label\":\"Shutdown\"}]"
 
-$OPBOX -c -o "$BUTTONS" 
+$OPBOX -c $FLAGS -o "$BUTTONS" 
 
 # check on return code 
 case $? in

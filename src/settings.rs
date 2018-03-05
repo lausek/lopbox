@@ -2,8 +2,6 @@ extern crate gtk;
 extern crate argparse;
 extern crate serde_json;
 
-//use self::gtk::{Button};
-
 use self::argparse::{ArgumentParser, Store, StoreTrue};
 
 use self::serde_json::{Map, Value};
@@ -14,6 +12,8 @@ pub struct Settings {
     pub title: String,
     pub is_cancelable: bool,
     pub buttons: Vec<SelectOption>,
+    pub foreground: String,
+    pub background: String, 
 }
 
 impl Settings {
@@ -23,6 +23,8 @@ impl Settings {
             title: String::from("Choose an option"),
             is_cancelable: false,
             buttons: Vec::new(),
+            foreground: String::from("#FFFFFF"),
+            background: String::from("#000000"),
         }
     }
 
@@ -45,12 +47,20 @@ impl Settings {
                         "Add cancel option to window. Defaults to exit code 0.");
 
             parser.refer(&mut buttons_raw)
-                .add_option(&["-b", "--buttons"], Store,
+                .add_option(&["-o", "--options"], Store,
                         r#"Specify the buttons as objects inside a JSON array. 
                         Each element can use the attributes:
                             code  - return code if this button is clicked; 
                             label - text to display"#)
                 .required();
+            
+            parser.refer(&mut settings.foreground)
+                .add_option(&["-f", "--foreground"], Store,
+                        "Set the foreground color of the dialog. (hexadecimal)");
+
+            parser.refer(&mut settings.background)
+                .add_option(&["-b", "--background"], Store,
+                        "Set the background color of the dialog. (hexadecimal)");
 
             parser.parse_args_or_exit(); 
         }
