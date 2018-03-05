@@ -1,14 +1,18 @@
 #! /usr/bin
 
-./opbox
+BUTTONS="[{\"code\":10,\"label\":\"Lock\"}, {\"code\":20,\"label\":\"Reboot\"}, {\"code\":30,\"label\":\"Shutdown\"}]"
+
+../target/debug/opbox -c -b "$BUTTONS" 
+
+# check on return code 
 case $? in
-"1")
+"10")
     echo "lock";
     ;;
-"2")
+"20")
     echo "reboot";
     ;;
-"3")
+"30")
     echo "shutdown";
     ;;
 *)

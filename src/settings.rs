@@ -26,7 +26,7 @@ impl Settings {
         }
     }
 
-    pub fn from_args() -> Settings {
+    pub fn from_args() -> Result<Settings, &'static str> {
 
         let mut settings = Settings::new();
 
@@ -46,19 +46,23 @@ impl Settings {
 
             parser.refer(&mut buttons_raw)
                 .add_option(&["-b", "--buttons"], Store,
-                        "Add cancel option to window. Defaults to exit code 0.");
+                        r#"Specify the buttons as objects inside a JSON array. 
+                        Each element can use the attributes:
+                            code  - return code if this button is clicked; 
+                            label - text to display"#)
+                .required();
 
             parser.parse_args_or_exit(); 
         }
 
-        if !buttons_raw.is_empty() {
-            match Settings::get_buttons(buttons_raw) {
-                Ok(ls) => settings.buttons = ls, 
-                _ => panic!("Handle this"), 
-            } 
-        }
-        
-        settings
+        match Settings::get_buttons(buttons_raw) {
+            Ok(ls) => {
+                settings.buttons = ls;
+
+                Ok(settings)
+            }, 
+            Err(msg) => Err(msg), 
+        } 
 
     }
 

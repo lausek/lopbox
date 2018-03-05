@@ -74,9 +74,16 @@ fn main() {
         return;
     } 
 
-    let mut settings = Settings::from_args();
+    for arg in std::env::args() {
+        println!("{}", arg);
+    }
 
-    let app = App::new(&mut settings);
-    run(&app);
-
+    match Settings::from_args() {
+        Ok(mut settings) => {
+            let app = App::new(&mut settings);
+            run(&app);
+        },
+        Err(msg) => println!("{}", msg), 
+    }
+    
 }
