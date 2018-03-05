@@ -1,74 +1,28 @@
 extern crate gtk;
-extern crate argparse;
 
 use gtk::prelude::*;
 use gtk::{Window, WindowType, WindowPosition};
 
-use argparse::{ArgumentParser, Store, StoreTrue};
+mod settings;
+use settings::Settings;
 
 const EXIT_NORMAL: i32 = 0;
 const EXIT_ERROR: i32 = 1;
-
 const PADDING: u32 = 10;
 
-struct Settings {
-    title: String,
-    is_cancelable: bool,
-}
-
-impl Settings {
-    
-    fn new() -> Settings {
-        Settings {
-            title: String::from("Choose an option"),
-            is_cancelable: false,
-        }
-    }
-
-    fn from_args() -> Settings {
-        
-        let mut settings = Settings::new();
-
-        {
-            let mut parser = ArgumentParser::new();
-            parser.set_description("Create a GTK based button dialog via command line");
-    
-            parser.refer(&mut settings.title)
-                .add_option(&["-t", "--title"], Store,
-                "Add a title to the window.");
-
-            parser.refer(&mut settings.is_cancelable)
-                .add_option(&["-c", "--cancelable"], StoreTrue,
-                "Add cancel option to window. Defaults to exit code 0.");
-    
-            parser.parse_args_or_exit(); 
-        }
-
-        settings
-
-    }
-
-}
-
 struct App<'a> {
-    settings: &'a Settings,
-    buttons: Vec<(i32, gtk::Button)>,
+    settings: &'a mut Settings,
 }
 
 impl<'a> App<'a> {
 
-    fn new(settings: &'a Settings, labels: Vec<&str>) -> App<'a> {
-        let mut app = App {
+    fn new(settings: &'a mut Settings) -> App<'a> {
+        let app = App {
             settings,
-            buttons: Vec::new(),
         }; 
-
-        for (i, label) in labels.iter().enumerate() {
-            app.buttons.push((1 + EXIT_ERROR + i as i32, gtk::Button::new_with_label(label)));
-        }
         
-        if settings.is_cancelable {
-            app.buttons.push((EXIT_NORMAL, gtk::Button::new_with_label("Cancel")));
+        if app.settings.is_cancelable {
+            app.settings.buttons.push((EXIT_NORMAL, gtk::Button::new_with_label("Cancel")));
         }
 
         app
@@ -81,7 +35,7 @@ fn close() -> gtk::Inhibit {
     Inhibit(false)
 }
 
-fn run(app: &mut App) {
+fn run(app: &App) {
 
     let window = Window::new(WindowType::Popup);
     window.set_keep_above(true);
@@ -94,7 +48,7 @@ fn run(app: &mut App) {
 
     let component = gtk::Box::new(gtk::Orientation::Vertical, 5);
    
-    for &(fcode, ref button) in &app.buttons {
+    for &(fcode, ref button) in &app.settings.buttons {
         button.connect_clicked(move |_| {
             close();
             std::process::exit(fcode);
@@ -115,15 +69,14 @@ fn run(app: &mut App) {
 
 fn main() {
 
-    let labels = vec!["Lock", "Reboot", "Shutdown"];
-    let settings = Settings::from_args();
-
     if gtk::init().is_err() {
         println!("Failed to inizialite gtk");
         return;
     } 
 
-    let mut app = App::new(&settings, labels);
-    run(&mut app);
+    let mut settings = Settings::from_args();
+
+    let app = App::new(&mut settings);
+    run(&app);
 
 }
