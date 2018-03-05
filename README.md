@@ -23,7 +23,7 @@ The program should be used as a part of bash scripts. `opbox` will return `0` fo
 
 BUTTONS="[{\"code\":10,\"label\":\"Lock\"}, {\"code\":20,\"label\":\"Reboot\"}, {\"code\":30,\"label\":\"Shutdown\"}]"
 
-../target/debug/opbox -c -b "$BUTTONS" 
+opbox -c -o "$BUTTONS" 
 
 # check on return code 
 case $? in

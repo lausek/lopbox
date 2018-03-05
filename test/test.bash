@@ -1,8 +1,12 @@
 #! /usr/bin
 
+# change this path according to your build directory
+BUILDPATH=~/Projects/opbox/target/debug/opbox
+OPBOX=$(realpath $BUILDPATH)
+
 BUTTONS="[{\"code\":10,\"label\":\"Lock\"}, {\"code\":20,\"label\":\"Reboot\"}, {\"code\":30,\"label\":\"Shutdown\"}]"
 
-../target/debug/opbox -c -b "$BUTTONS" 
+$OPBOX -c -o "$BUTTONS" 
 
 # check on return code 
 case $? in
