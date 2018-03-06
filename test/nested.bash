@@ -11,26 +11,34 @@ function confirm {
     $OPBOX $FLAGS -i "Do you really want to $1?" -o "$(echo '[{"code":10,"label":"Yes"}, {"code":20,"label":"No"}]' | tr '"' '\"')"
 }
 
-# tr: escape json string 
-$OPBOX -c $FLAGS -o "$(echo $BUTTONS | tr '"' '\"')" 
+while true; do
 
-# check on return code 
-case $? in
-"10")
-    echo "lock";
-    ;;
-"20")
-    confirm reboot
-    if [ $? -eq "10" ]; then
-        echo "reboot";
-    fi
-    ;;
-"30")
-    confirm shutdown
-    if [ $? -eq "10" ]; then
-        echo "shutdown";
-    fi
-    ;;
-*)
-    echo "cancel";
-esac
+    # tr: escape json string 
+    $OPBOX -c $FLAGS -o "$(echo $BUTTONS | tr '"' '\"')" 
+
+    # check on return code 
+    case $? in
+        10)
+            echo "lock";
+            ;;
+        20)
+            confirm reboot
+            if [ $? -ne 10 ]; then
+                continue
+            fi
+            echo "reboot";
+            ;;
+        30)
+            confirm shutdown
+            if [ $? -ne 10 ]; then
+                continue
+            fi
+            echo "shutdown";
+            ;;
+        *)
+            echo "cancel";
+    esac
+    
+    exit 0
+
+done
