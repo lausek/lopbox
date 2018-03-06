@@ -2,7 +2,7 @@ extern crate gtk;
 extern crate argparse;
 extern crate serde_json;
 
-use self::argparse::{ArgumentParser, Store, StoreTrue};
+use self::argparse::{ArgumentParser, Store, StoreTrue, StoreOption};
 
 use self::serde_json::{Map, Value};
 
@@ -10,6 +10,7 @@ type SelectOption = (i32, gtk::Button);
 
 pub struct Settings {
     pub title: String,
+    pub info: Option<String>,
     pub is_cancelable: bool,
     pub buttons: Vec<SelectOption>,
     pub foreground: String,
@@ -21,6 +22,7 @@ impl Settings {
     fn new() -> Settings {
         Settings {
             title: String::from("Choose an option"),
+            info: None,
             is_cancelable: false,
             buttons: Vec::new(),
             foreground: String::from("#FFFFFF"),
@@ -41,6 +43,10 @@ impl Settings {
             parser.refer(&mut settings.title)
                 .add_option(&["-t", "--title"], Store,
                         "Add a title to the window.");
+
+            parser.refer(&mut settings.info)
+                .add_option(&["-i", "--info"], StoreOption,
+                        "Add an info message to the window.");
 
             parser.refer(&mut settings.is_cancelable)
                 .add_option(&["-c", "--cancelable"], StoreTrue,

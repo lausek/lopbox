@@ -60,6 +60,10 @@ fn run(app: &App) {
     }
     
     let component = gtk::Box::new(gtk::Orientation::Horizontal, 10);
+        
+    if let &Some(ref info) = &app.settings.info {
+        component.pack_start(&gtk::Label::new(info.as_str()), true, true, PADDING);
+    }
    
     for &(fcode, ref button) in &app.settings.buttons {
         button.connect_clicked(move |_| {
