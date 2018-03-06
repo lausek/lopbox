@@ -6,8 +6,8 @@ This repo requires you to have `libgtk-3-dev` installed on your system (see [her
 
 ### Debian or Ubuntu
 
-```
-> sudo apt-get install libgtk-3-dev
+``` bash
+$ sudo apt-get install libgtk-3-dev
 ```
 
 ## Usage
