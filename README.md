@@ -1,20 +1,12 @@
-`opbox` is a small gtk based program for creating button dialogs.
-
-## Installation
-
-This repo requires you to have `libgtk-3-dev` installed on your system (see [here](https://github.com/gtk-rs/gtk)). 
-
-### Debian or Ubuntu
-
-``` bash
-$ sudo apt-get install libgtk-3-dev
-```
+`opbox` is a small gtk based program for creating button dialogs. It is intended to be used as part of shell scripts.
 
 ## Usage
 
-At the moment `opbox` is hardcoded with system control commands. Buttons and optical tweaks will be configurable later via command line.
+Buttons displayed inside the dialog can be configured by a json string that contains a list of objects. Objects itself can hold the attributes `code` for the designated return value and `label` for the buttons text. Any other keys will be ignored.
 
-The program should be used as a part of bash scripts. `opbox` will return `0` for a regular close or cancel, `1` for an internal error - every other code is free for use by custom buttons.
+`opbox` will return `0` for a regular close or cancel, `1` for an internal error - every other code is free for use by custom buttons.
+
+![example](screenshot.png)
 
 `test.bash`
 
@@ -39,6 +31,15 @@ case $? in
 *)
     echo "cancel";
 esac
+```
+## Installation
+
+This repo requires you to have `libgtk-3-dev` installed on your system (see [here](https://github.com/gtk-rs/gtk)). 
+
+### Debian or Ubuntu
+
+``` bash
+$ sudo apt-get install libgtk-3-dev
 ```
 
 ## Background
