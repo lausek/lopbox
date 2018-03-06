@@ -59,7 +59,7 @@ fn run(app: &App) {
         StyleContext::add_provider_for_screen(&screen, &provider, gtk::STYLE_PROVIDER_PRIORITY_APPLICATION); 
     }
 
-    let component = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    let component = gtk::Box::new(gtk::Orientation::Horizontal, 10);
    
     for &(fcode, ref button) in &app.settings.buttons {
         button.connect_clicked(move |_| {
@@ -70,10 +70,14 @@ fn run(app: &App) {
         component.pack_start(button, true, true, PADDING);
     }
     
+    component.set_margin_top(15);
+    component.set_margin_bottom(15);
+    component.set_margin_left(10);
+    component.set_margin_right(10);
     component.show_all();
 
     window.add(&component);
-
+    
     window.show_all();
 
     gtk::main();
