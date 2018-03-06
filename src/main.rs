@@ -40,7 +40,7 @@ fn run(app: &App) {
     let provider = gtk::CssProvider::new();
     
     {
-        let css_string = format!("*{{background-image:none;color:{};background-color:{};}}",
+        let css_string = format!("box, button {{border-radius:0;background-image:none;color:{};background-color:{}; }} box {{padding:15px;}}",
                                 app.settings.foreground,
                                 app.settings.background);
         provider.load_from_data(css_string.as_bytes()).ok();
@@ -58,7 +58,7 @@ fn run(app: &App) {
         let screen = context.get_screen().unwrap();
         StyleContext::add_provider_for_screen(&screen, &provider, gtk::STYLE_PROVIDER_PRIORITY_APPLICATION); 
     }
-
+    
     let component = gtk::Box::new(gtk::Orientation::Horizontal, 10);
    
     for &(fcode, ref button) in &app.settings.buttons {
@@ -69,11 +69,11 @@ fn run(app: &App) {
     
         component.pack_start(button, true, true, PADDING);
     }
-    
-    component.set_margin_top(15);
-    component.set_margin_bottom(15);
-    component.set_margin_left(10);
-    component.set_margin_right(10);
+
+    component.set_margin_top(2);
+    component.set_margin_bottom(2);
+    component.set_margin_left(2);
+    component.set_margin_right(2);
     component.show_all();
 
     window.add(&component);
@@ -85,11 +85,8 @@ fn run(app: &App) {
 }
 
 fn main() {
-
-    if gtk::init().is_err() {
-        println!("Failed to inizialite gtk");
-        return;
-    } 
+    
+    gtk::init().unwrap_or_else(|_| panic!("Failed to inizialite gtk"));    
 
     match Settings::from_args() {
         Ok(mut settings) => {
