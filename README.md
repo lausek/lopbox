@@ -6,7 +6,9 @@ Buttons displayed inside the dialog can be configured by a json string that cont
 
 `opbox` will return `0` for a regular close or cancel, `1` for an internal error - every other code is free for use by custom buttons.
 
-![example](screenshot.png)
+<p align="center">
+    <img src="screenshot.png" alt="example"/>
+</p>
 
 `test.bash`
 
