@@ -40,7 +40,7 @@ fn run(app: &App) {
     let provider = gtk::CssProvider::new();
     
     {
-        let css_string = format!("box, button {{border-radius:0;background-image:none;color:{};background-color:{}; }} box {{padding:15px;}}",
+        let css_string = format!("box, button {{border-radius:0;background-image:none;color:{};background-color:{};}} box {{padding:15px;}}",
                                 app.settings.foreground,
                                 app.settings.background);
         provider.load_from_data(css_string.as_bytes()).ok();
@@ -49,9 +49,7 @@ fn run(app: &App) {
     let window = Window::new(WindowType::Popup);
     window.set_keep_above(true);
     window.set_position(WindowPosition::Center);
-    window.connect_delete_event(|_, _| {
-        close()
-    });
+    window.connect_delete_event(|_, _| close());
     window.set_title(&app.settings.title);
 
     if let Some(context) = window.get_style_context() {

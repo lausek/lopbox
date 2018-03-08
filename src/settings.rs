@@ -33,7 +33,6 @@ impl Settings {
     pub fn from_args() -> Result<Settings, &'static str> {
 
         let mut settings = Settings::new();
-
         let mut buttons_raw = String::new();
 
         {
@@ -71,14 +70,10 @@ impl Settings {
             parser.parse_args_or_exit(); 
         }
 
-        match Settings::get_buttons(buttons_raw) {
-            Ok(ls) => {
-                settings.buttons = ls;
-
-                Ok(settings)
-            }, 
-            Err(msg) => Err(msg), 
-        } 
+        Settings::get_buttons(buttons_raw).and_then(|s| {
+            settings.buttons = s;
+            Ok(settings)
+        })
 
     }
 
