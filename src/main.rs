@@ -40,9 +40,22 @@ fn run(app: &App) {
     let provider = gtk::CssProvider::new();
     
     {
-        let css_string = format!("box, button {{border-radius:0;background-image:none;color:{};background-color:{};}} box {{padding:15px;}}",
-                                app.settings.foreground,
-                                app.settings.background);
+        let f = &app.settings.foreground;
+        let b = &app.settings.background;
+        let css_string = format!("box, button {{
+                                    border-radius:0;
+                                    background-image:none;
+                                    color:{f};
+                                    border-color:{f};
+                                    background-color:{b};
+                                 }} 
+                                 label {{text-shadow:none}}
+                                 window {{
+                                    background-color:{f};
+                                 }}
+                                 box {{
+                                    padding:15px;
+                                 }}", f = f, b = b);
         provider.load_from_data(css_string.as_bytes()).ok();
     }
 

@@ -80,9 +80,9 @@ impl Settings {
     fn get_code(obj: &Map<String, Value>) -> i32 {
         
         if let Some(json_button) = obj.get("code") {
-            match json_button {
-                &Value::Number(ref n) => n.as_i64().unwrap() as i32,
-                &Value::String(ref s) => s.parse::<i32>().unwrap(),
+            match *json_button {
+                Value::Number(ref n) => n.as_i64().unwrap() as i32,
+                Value::String(ref s) => s.parse::<i32>().unwrap(),
                 _ => 0,
             }
         } else {
@@ -106,8 +106,8 @@ impl Settings {
                         
                             let code = Settings::get_code(&json_button);
                             let label = match json_button.get("label") {
-                                Some(obj) => match obj { 
-                                    &Value::String(ref s) => s.clone(),
+                                Some(obj) => match *obj { 
+                                    Value::String(ref s) => s.clone(),
                                     _ => format!("Option {}", code),
                                 },
                                 _ => format!("Option {}", code),
