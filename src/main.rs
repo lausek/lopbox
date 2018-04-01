@@ -2,12 +2,11 @@ extern crate gtk;
 
 use gtk::prelude::*;
 use gtk::{StyleContext, Window, WindowType, WindowPosition};
-
-mod settings;
 use settings::Settings;
 
+mod settings;
+
 const EXIT_NORMAL: i32 = 0;
-const EXIT_ERROR: i32 = 1;
 const PADDING: u32 = 10;
 
 struct App<'a> {
@@ -45,17 +44,17 @@ fn run(app: &App) {
         let css_string = format!("box, button {{
                                     border-radius:0;
                                     background-image:none;
-                                    color:{f};
-                                    border-color:{f};
-                                    background-color:{b};
+                                    color:{0};
+                                    border-color:{0};
+                                    background-color:{1};
                                  }} 
                                  label {{text-shadow:none}}
                                  window {{
-                                    background-color:{f};
+                                    background-color:{0};
                                  }}
                                  box {{
                                     padding:15px;
-                                 }}", f = f, b = b);
+                                 }}", f, b);
         provider.load_from_data(css_string.as_bytes()).ok();
     }
 
