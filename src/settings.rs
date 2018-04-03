@@ -4,8 +4,6 @@ extern crate serde_json;
 
 use self::argparse::{ArgumentParser, Store, StoreTrue, StoreOption};
 
-use self::serde_json::{Map, Value};
-
 type SelectOption = (i32, gtk::Button);
 
 pub struct Settings {
@@ -41,31 +39,31 @@ impl Settings {
 
             parser.refer(&mut settings.title)
                 .add_option(&["-t", "--title"], Store,
-                        "Add a title to the window.");
+                            "Add a title to the window.");
 
             parser.refer(&mut settings.info)
                 .add_option(&["-i", "--info"], StoreOption,
-                        "Add an info message to the window.");
+                            "Add an info message to the window.");
 
             parser.refer(&mut settings.is_cancelable)
                 .add_option(&["-c", "--cancelable"], StoreTrue,
-                        "Add cancel option to window. Defaults to exit code 0.");
+                            "Add cancel option to window. Defaults to exit code 0.");
 
             parser.refer(&mut buttons_raw)
                 .add_option(&["-o", "--options"], Store,
-                        r#"Specify the buttons as objects inside a JSON array. 
+                            r#"Specify the buttons as objects inside a JSON array. 
                         Each element can use the attributes:
                             code  - return code if this button is clicked; 
                             label - text to display"#)
                 .required();
-            
+
             parser.refer(&mut settings.foreground)
                 .add_option(&["-f", "--foreground"], Store,
-                        "Set the foreground color of the dialog. (hexadecimal)");
+                            "Set the foreground color of the dialog. (hexadecimal)");
 
             parser.refer(&mut settings.background)
                 .add_option(&["-b", "--background"], Store,
-                        "Set the background color of the dialog. (hexadecimal)");
+                            "Set the background color of the dialog. (hexadecimal)");
 
             parser.parse_args_or_exit(); 
         }
@@ -77,64 +75,25 @@ impl Settings {
 
     }
 
-    fn get_code(obj: &Map<String, Value>) -> i32 {
-        
-        if let Some(json_button) = obj.get("code") {
-            match *json_button {
-                Value::Number(ref n) => n.as_i64().unwrap() as i32,
-                Value::String(ref s) => s.parse::<i32>().unwrap(),
-                _ => 0,
-            }
-        } else {
-            0
-        }
-    
-    }
-
     fn get_buttons(raw: String) -> Result<Vec<SelectOption>, &'static str> {
-    
-        match serde_json::from_str(raw.as_str()) {
-            Ok(json_obj) => {
-                
-                if let Value::Array(json_arr) = json_obj {
-                    
-                    let mut buttons: Vec<SelectOption> = Vec::new();
-                
-                    for val in json_arr {
-                        
-                        if let Value::Object(json_button) = val {
-                        
-                            let code = Settings::get_code(&json_button);
-                            let label = match json_button.get("label") {
-                                Some(obj) => match *obj { 
-                                    Value::String(ref s) => s.clone(),
-                                    _ => format!("Option {}", code),
-                                },
-                                _ => format!("Option {}", code),
-                            };
 
-                            buttons.push((code, gtk::Button::new_with_label(label.as_str())));
+        #[derive(Serialize, Deserialize)]
+        struct JsonButton {
+            label: String,
+            code: i32,    
+        };
 
-                        } else {
-                                
-                            println!("'{}' is not interpretable as button", val);
-
-                        }
-
-                    }
-
-                    Ok(buttons)
-                
-                } else {
-                    
-                    Err("Given json is not an array of objects")
-
-                }
-
+        match serde_json::from_str::<Vec<JsonButton>>(raw.as_str()) {
+            Ok(ls) => {
+                Ok(ls.iter()
+                        .map(|jb| {
+                            (jb.code, gtk::Button::new_with_label(jb.label.as_str()))
+                        })
+                        .collect::<Vec<SelectOption>>())
             },
-            Err(err) => { println!("{:?}", err); Err("Error") }
+            Err(x) => Err(""),
         }
-    
+
     }
 
 }

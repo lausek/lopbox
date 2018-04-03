@@ -1,5 +1,8 @@
 extern crate gtk;
 
+#[macro_use]
+extern crate serde_derive;
+
 use gtk::prelude::*;
 use gtk::{StyleContext, Window, WindowType, WindowPosition};
 use settings::Settings;

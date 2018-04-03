@@ -13,7 +13,7 @@ Buttons displayed inside the dialog can be configured by a json string that cont
 `test.bash`
 
 ``` bash
-#! /usr/bin
+#!/usr/bin
 
 BUTTONS="[{\"code\":10,\"label\":\"Lock\"}, {\"code\":20,\"label\":\"Reboot\"}, {\"code\":30,\"label\":\"Shutdown\"}]"
 
