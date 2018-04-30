@@ -15,9 +15,9 @@ Buttons displayed inside the dialog can be configured by a json string that cont
 ``` bash
 #!/usr/bin
 
-BUTTONS="[{\"code\":10,\"label\":\"Lock\"}, {\"code\":20,\"label\":\"Reboot\"}, {\"code\":30,\"label\":\"Shutdown\"}]"
+BUTTONS='[{"code":10,"label":"Lock"}, {"code":20,"label":"Reboot"}, {"code":30,"label":"Shutdown"}]' 
 
-opbox -c -o "$BUTTONS" 
+opbox -c $FLAGS -o "$(echo $BUTTONS | tr '"' '\"')" 
 
 # check on return code 
 case $? in
