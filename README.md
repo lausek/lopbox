@@ -10,8 +10,6 @@ Buttons displayed inside the dialog can be configured by a json string that cont
     <img src="screenshot.png" alt="example"/>
 </p>
 
-`test`
-
 ``` bash
 #!/bin/bash
 
