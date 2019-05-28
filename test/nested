@@ -1,4 +1,4 @@
-#! /usr/bin
+#!/bin/bash
 
 # change this path according to your build directory
 BUILDPATH=~/Projects/opbox/target/debug/opbox
