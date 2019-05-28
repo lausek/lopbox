@@ -2,6 +2,10 @@
 name = "opbox"
 version = "0.1.0"
 authors = ["lausek <root@lausek.eu>"]
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+]
 
 [dependencies]
 argparse = "0.2.1"
