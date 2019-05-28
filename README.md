@@ -34,7 +34,14 @@ case $? in
     echo "cancel";
 esac
 ```
+
 ## Installation
+
+``` bash
+cargo install opbox
+```
+
+## Development requirements
 
 This repo requires you to have `libgtk-3-dev` installed on your system (see [here](https://github.com/gtk-rs/gtk)). 
 
