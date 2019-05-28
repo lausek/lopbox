@@ -10,10 +10,10 @@ Buttons displayed inside the dialog can be configured by a json string that cont
     <img src="screenshot.png" alt="example"/>
 </p>
 
-`test.bash`
+`test`
 
 ``` bash
-#!/usr/bin
+#!/bin/bash
 
 BUTTONS='[{"code":10,"label":"Lock"}, {"code":20,"label":"Reboot"}, {"code":30,"label":"Shutdown"}]' 
 
