@@ -41,19 +41,18 @@ impl App {
         window.connect_delete_event(|_, _| close());
         window.set_title(&self.settings.title);
 
-        if let Some(context) = window.get_style_context() {
-            let screen = context.get_screen().unwrap();
-            StyleContext::add_provider_for_screen(
-                &screen,
-                &provider,
-                gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-            );
-        }
+        let context = window.get_style_context();
+        let screen = context.get_screen().unwrap();
+        StyleContext::add_provider_for_screen(
+            &screen,
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
 
         let component = gtk::Box::new(gtk::Orientation::Horizontal, 10);
 
         if let Some(ref info) = self.settings.info {
-            component.pack_start(&gtk::Label::new(info.as_str()), true, true, PADDING);
+            component.pack_start(&gtk::Label::new(Some(info.as_str())), true, true, PADDING);
         }
 
         for &(fcode, ref button) in &self.settings.buttons {
@@ -65,10 +64,7 @@ impl App {
             component.pack_start(button, true, true, PADDING);
         }
 
-        component.set_margin_top(2);
-        component.set_margin_bottom(2);
-        component.set_margin_left(2);
-        component.set_margin_right(2);
+        component.set_spacing(2);
         component.show_all();
 
         window.add(&component);

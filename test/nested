@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # change this path according to your build directory
-BUILDPATH=~/Projects/opbox/target/debug/opbox
+BUILDPATH=../target/debug/opbox
 OPBOX=$(realpath $BUILDPATH)
 FLAGS="-f #d3d3d3 -b #101010"
 
