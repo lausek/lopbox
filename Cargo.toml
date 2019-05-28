@@ -2,6 +2,13 @@
 name = "opbox"
 version = "0.1.0"
 authors = ["lausek <root@lausek.eu>"]
+edition = "2018"
+homepage = "https://github.com/lausek/opbox"
+repository = "https://github.com/lausek/opbox"
+
+description = "Create a GTK based button dialog via command line."
+keywords = ["button", "user", "dialog", "script"]
+categories = ["command-line-utilities", "gui"]
 include = [
     "**/*.rs",
     "Cargo.toml",
