@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# change this path according to your build directory
+COMMAND=(opbox -b "#101010" -f "#d3d3d3" -c)
+
+layout() {
+    echo "10;Lock"
+    echo "20;Reboot"
+    echo "30;Shutdown"
+}
+
+layout | $(${COMMAND[@]})
+
+# check on return code 
+case $? in
+"10")
+    echo "lock";
+    ;;
+"20")
+    echo "reboot";
+    ;;
+"30")
+    echo "shutdown";
+    ;;
+*)
+    echo "cancel";
+esac

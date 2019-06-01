@@ -5,7 +5,13 @@ pub struct App {
 }
 
 impl App {
-    pub fn new(settings: Settings) -> App {
+    pub fn new(mut settings: Settings) -> App {
+        if settings.cancelable {
+            settings.add_cancel_button();
+        }
+
+        assert!(!settings.buttons.is_empty());
+
         App { settings }
     }
 

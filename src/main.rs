@@ -24,7 +24,10 @@ fn main() {
     gtk::init().unwrap_or_else(|_| panic!("Failed to inizialite gtk"));
 
     match Settings::from_args() {
-        Ok(settings) => App::new(settings).run(),
+        Ok(mut settings) => {
+            settings.add_stdin();
+            App::new(settings).run();
+        }
         Err(msg) => println!("{}", msg),
     }
 }

@@ -57,17 +57,14 @@ impl Settings {
                 "Add cancel option to window. Defaults to exit code 0.",
             );
 
-            parser
-                .refer(&mut buttons_raw)
-                .add_option(
-                    &["-o", "--options"],
-                    Store,
-                    r#"Specify the buttons as objects inside a JSON array. 
+            parser.refer(&mut buttons_raw).add_option(
+                &["-o", "--options"],
+                Store,
+                r#"Specify the buttons as objects inside a JSON array. 
                         Each element can use the attributes:
                             code  - return code if this button is clicked; 
                             label - text to display"#,
-                )
-                .required();
+            );
 
             parser.refer(&mut settings.foreground).add_option(
                 &["-f", "--foreground"],
@@ -84,14 +81,29 @@ impl Settings {
             parser.parse_args_or_exit();
         }
 
-        settings.buttons = Settings::get_buttons(buttons_raw)?;
-        if settings.cancelable {
-            settings
-                .buttons
-                .push((EXIT_NORMAL, gtk::Button::new_with_label("Cancel")));
+        if !buttons_raw.is_empty() {
+            settings.buttons = Settings::get_buttons(buttons_raw)?;
         }
 
         Ok(settings)
+    }
+
+    pub fn add_stdin(&mut self) {
+        use std::io::*;
+        for (i, line) in stdin().lock().lines().enumerate() {
+            match line.unwrap().split(";").collect::<Vec<_>>().as_slice() {
+                [id, label] => {
+                    let id: i32 = id.parse().expect("id is not a number");
+                    self.buttons.push((id, gtk::Button::new_with_label(label)));
+                }
+                _ => panic!("invalid input on line {}", i),
+            }
+        }
+    }
+
+    pub fn add_cancel_button(&mut self) {
+        self.buttons
+            .push((EXIT_NORMAL, gtk::Button::new_with_label("Cancel")));
     }
 
     fn get_buttons(raw: String) -> Result<Vec<SelectOption>, String> {
