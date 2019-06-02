@@ -1,14 +1,15 @@
 #!/bin/bash
 
 # change this path according to your build directory
-BUILDPATH=../target/debug/opbox
-OPBOX=$(realpath $BUILDPATH)
+
+#BUILDPATH=../target/debug/opbox
+#OPBOX=$(realpath $BUILDPATH)
 FLAGS="-f #d3d3d3 -b #101010"
 
 BUTTONS='[{"code":10,"label":"Lock"}, {"code":20,"label":"Reboot"}, {"code":30,"label":"Shutdown"}]' 
 
 # tr: escape json string 
-$OPBOX -c $FLAGS -o "$(echo $BUTTONS | tr '"' '\"')" 
+lopbox -c $FLAGS -o "$(echo $BUTTONS | tr '"' '\"')" 
 
 # check on return code 
 case $? in

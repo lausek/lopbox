@@ -1,5 +1,5 @@
 [package]
-name = "opbox"
+name = "lopbox"
 version = "0.1.1"
 authors = ["lausek <root@lausek.eu>"]
 edition = "2018"

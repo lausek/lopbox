@@ -1,10 +1,10 @@
-`opbox` is a small gtk based program for creating button dialogs. It is intended to be used as part of shell scripts.
+`lopbox` is a small gtk based program for creating button dialogs. It is intended to be used as part of shell scripts.
 
 ## Usage
 
 Buttons displayed inside the dialog can be configured by a json string that contains a list of objects. Objects itself can hold the attributes `code` for the designated return value and `label` for the buttons text. Any other keys will be ignored.
 
-`opbox` will return `0` for a regular close or cancel, `1` for an internal error - every other code is free for use by custom buttons.
+`lopbox` will return `0` for a regular close or cancel, `1` for an internal error - every other code is free for use by custom buttons.
 
 <p align="center">
     <img src="screenshot.png" alt="example"/>
@@ -15,7 +15,7 @@ Buttons displayed inside the dialog can be configured by a json string that cont
 
 BUTTONS='[{"code":10,"label":"Lock"}, {"code":20,"label":"Reboot"}, {"code":30,"label":"Shutdown"}]' 
 
-opbox -c $FLAGS -o "$(echo $BUTTONS | tr '"' '\"')" 
+lopbox -c $FLAGS -o "$(echo $BUTTONS | tr '"' '\"')" 
 
 # check on return code 
 case $? in
@@ -36,7 +36,7 @@ esac
 ## Installation
 
 ``` bash
-cargo install opbox
+cargo install lopbox
 ```
 
 ## Development requirements
