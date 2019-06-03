@@ -6,6 +6,8 @@ Buttons displayed inside the dialog can be configured by a json string that cont
 
 `lopbox` will return `0` for a regular close or cancel, `1` for an internal error - every other code is free for use by custom buttons.
 
+Buttons can either be declared by passing json via parameter `-o` or by piping lines in the form `<return_code>;<label>` to stdin.
+
 <p align="center">
     <img src="screenshot.png" alt="example"/>
 </p>
@@ -13,9 +15,15 @@ Buttons displayed inside the dialog can be configured by a json string that cont
 ``` bash
 #!/bin/bash
 
-BUTTONS='[{"code":10,"label":"Lock"}, {"code":20,"label":"Reboot"}, {"code":30,"label":"Shutdown"}]' 
+COMMAND=(lopbox -b "#101010" -f "#d3d3d3" -c)
 
-lopbox -c $FLAGS -o "$(echo $BUTTONS | tr '"' '\"')" 
+layout() {
+    echo "10;Lock"
+    echo "20;Reboot"
+    echo "30;Shutdown"
+}
+
+layout | $(${COMMAND[@]})
 
 # check on return code 
 case $? in

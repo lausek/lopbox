@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# change this path according to your build directory
 COMMAND=(lopbox -b "#101010" -f "#d3d3d3" -c)
 
 layout() {
