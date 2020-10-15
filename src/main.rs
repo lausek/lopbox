@@ -21,7 +21,7 @@ fn close() -> gtk::Inhibit {
 }
 
 fn main() {
-    gtk::init().unwrap_or_else(|_| panic!("Failed to inizialite gtk"));
+    gtk::init().expect("failed to initialize gtk");
 
     match Settings::from_args() {
         Ok(mut settings) => {
