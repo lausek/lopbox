@@ -15,15 +15,13 @@ Buttons can either be declared by passing json via parameter `-o` or by piping l
 ``` bash
 #!/bin/bash
 
-COMMAND=(lopbox -b "#101010" -f "#d3d3d3" -c)
-
 layout() {
     echo "10;Lock"
     echo "20;Reboot"
     echo "30;Shutdown"
 }
 
-layout | $(${COMMAND[@]})
+layout | lopbox -b "#101010" -f "#d3d3d3" -c
 
 # check on return code 
 case $? in
@@ -56,7 +54,3 @@ This repo requires you to have `libgtk-3-dev` installed on your system (see [her
 ``` bash
 $ sudo apt-get install libgtk-3-dev
 ```
-
-## Background
-
-Do you know the moment when you are lying in your bed and the only thing you have in scope is your wireless mouse? Too bad that you use a tiled window manager and your setup isn't meant to be shut down by mouse... 
